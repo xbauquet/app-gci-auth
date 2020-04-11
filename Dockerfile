@@ -5,6 +5,7 @@ MAINTAINER Xavier Bauquet <xavier.bauquet@gmail.com>
 RUN apk add --no-cache binutils
 
 RUN mkdir -p /home/workdir/libs/
+COPY build/libs/*.jar /home/workdir/libs/
 WORKDIR /home/workdir/
 RUN jpackage -n app --input libs --main-jar app-gci-auth-1.0.jar -t app-image
 
