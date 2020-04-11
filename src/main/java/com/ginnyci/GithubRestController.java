@@ -21,6 +21,7 @@ public class GithubRestController {
                 "client_secret=" + clientSecret + "&" +
                 "state=" + githubCode.state + "&" +
                 "code=" + githubCode.code;
+        System.out.println("Requesting:" + url);
         RestTemplate restTemplate = new RestTemplate();
         return restTemplate.postForObject(url, null, Token.class);
     }

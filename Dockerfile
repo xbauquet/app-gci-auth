@@ -18,4 +18,7 @@ RUN mkdir -p /home/workdir/app/
 COPY --from=builder /home/workdir/app/ /home/workdir/app/
 WORKDIR /home/workdir/app/bin/
 
+ENV CLIENT_ID = ""
+ENV CLIENT_SECRET = ""
+
 CMD ["./app"]
