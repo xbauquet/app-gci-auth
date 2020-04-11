@@ -1,0 +1,31 @@
+name: Publish
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v1
+        with:
+          java-version: 14
+      - name: Gradle build
+        run: ./gradlew --no-deamon clean build
+      - name: Docker build
+        run: docker build -t image .
+      - name: Docker registry login
+        run: echo "${{ github.token }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+      - name: Docker image push
+        run: |
+          repository=$(echo ${{ github.repository }} | sed -e 's/\(.*\)/\L\1/')
+          imageName=$(echo $repository | cut -d '/' -f 2)
+          imageId=docker.pkg.github.com/$repository/$imageName
+
+          version=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+          # If version is a tag the v is removed
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && version=$(echo $version | sed -e 's/^v//')
+
+          docker tag image $imageId:$version
+          docker push $imageId:$version
