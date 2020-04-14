@@ -13,7 +13,7 @@ public class GithubRestController {
     @Value("#{environment.CLIENT_SECRET}")
     private String clientSecret;
 
-    @CrossOrigin(origins = {"http://localhost:4200", "https://ginny-ci.com/"})
+    @CrossOrigin(origins = {"http://localhost:4200", "https://ginny-ci.com"})
     @PostMapping
     public Token auth(@RequestBody GithubCode githubCode) {
         String url = "https://github.com/login/oauth/access_token?" +
